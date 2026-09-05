@@ -1,0 +1,29 @@
+h1, h2, h4 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+
+}
+.text{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #333333;
+}
+.page-color{
+    background-color: #F4F7F6;
+}
+.card-color{
+    background-color: #FFFFFF;
+}
+.card-pai{
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px;
+    margin: auto;
+}
+.card-filho{
+    border-radius: 25px;
+    padding: 25px;
+    
+}
+.order{
+    order: 1;
+}

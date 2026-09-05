@@ -5,60 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora Financeira GreenTech</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-    <h1>O que o nosso sistema oferece?</h1>
-    <div>
-        <h2>Escolha um grão abaixo</h2>
-
-        <select name="" id="sel_ativo">
-            <option value="3">Escolha</option>
-            <option value="0">Arroz</option>
-            <option value="1">Milho</option>
-            <option value="2">Soja</option>
-        </select>
-        <h2>Calculadora de custo de armazenamento, considerando uma base de custo de R$ 4,50 por saca (60kg)</h2>
-        Insira a quantidade de meses armazenando <input type="text" id="ipt_meses">
-        <br><br>
-        Insira a quantidade estimada de quilos armazenados <input type="text" id="ipt_quilos">
-        <br><br>
-        <button onclick="calculo1()">CALCULAR</button>
-        <br>
-        <div id="div_msg"></div>
-    </div>
-    <div>
-        <h2>Agora você pode calcular o custo do prejuízo de uma venda forçada, caso não há um monitoramento contínuo do silo, com base de uma perda de R$ 20,00 por saca (60kg)</h2>
-        <br>
-        <button onclick="calculo2()">CALCULAR CUSTO</button>
-        <br>
-        <div id="div_msg2"></div>
-    </div>
-    <div>
-        <h2>Veja agora o valor do seu ativo armazenado para venda no mercado internacional</h2>
-        <br>
-        Insira o basis do porto <input type="text" id="ipt_basis">
-        <br>
-        <button onclick="calculodolar()">Calcular em DÓLAR</button>
-        <br>
-        <h2>Veja também o valor do seu ativo para venda no mercado nacional</h2>
-        Insira o ICMS cobrado para a venda INTERESTADUAL, caso a venda seja no próprio estado insira 0 <input type="text" id="ipt_icms">
-        <br>
-        <button onclick="calculoreal()">Calcular em REAL</button>
-        <br>
-        <div id="div_msg3"></div>
-    </div>
-    <div>
-        <h2>
-
-        </h2>
+<body class="page-color">
+    <h1>Maximize a Rentabilidade da sua Safra com a Grain Tech</h1>
+    <h2>Não seja refém do mercado na hora da colheita.</h2>
+    <p class="text"> Vender grãos por falta de espaço no silo no momento de alta oferta reduz o seu poder de negociação e derruba a
+        sua rentabilidade. Enquanto uma venda forçada pode te dar um prejuízo de até R$ 25,00 por saca, o armazenamento
+        estratégico custa, no máximo, R$ 4,50. Retome o controle da sua safra e venda quando o lucro for maior.</p>
+    <div class="card-pai">
+        <div class="card-color card-filho">
+            <h2>Selecione o ativo:</h2>
+            <select name="" id="sel_ativo">
+                <option value="3">Tipo de grão</option>
+                <option value="0">Arroz</option>
+                <option value="1">Milho</option>
+                <option value="2">Soja</option>
+            </select>
+            <h2>Simulador de Custo de Armazenagem</h2>
+            <span class="text">(Base de cálculo: R$ 4,50 / saca)</span>
+            <br><br>
+            <span class="text">Volume estimado (em kg): </span><input type="text" id="ipt_quilos">
+            <br><br>
+            <span class="text">Tempo de armazenamento (meses): </span><input type="text" id="ipt_meses">
+            <button onclick="calculo1()">Simular Custo</button>
+            <br>
+            <div id="div_msg" class="text"></div>
+        </div>
+        <div class="card-color card-filho">
+            <h2>Análise de Perdas por Venda Forçada</h2>
+            <button onclick="calculo2()">Analisar Margem</button>
+            <br>
+            <div id="div_msg2" class="text"></div>
+        </div>
+        <div class="card-color card-filho">
+            <h2>Projeção de Faturamento – Mercado Internacional</h2>
+           <span class="text">Prêmio Basis no Porto (US$): </span><input type="text" id="ipt_basis">
+            <button onclick="calculodolar()">Simular Exportação</button>
+            <br>
+            <div id="div_msg3" class="text"></div>
+            <h2 class="color-empashis">Projeção de Faturamento – Mercado Nacional</h2>
+            <span class="text">Alíquota de ICMS (%) </span><input type="text" id="ipt_icms">   
+            <button onclick="calculoreal()">Simular Mercado Interno</button>
+            <br>
+            <div id="div_msg4" class="text"></div>
+        </div>
     </div>
 </body>
 <script>
     let padrao_cwt_arroz = 45.359237;
     let padrao_bushel_soja = 27.2155;
     let padrao_bushel_milho = 25.4012;
-    let cotacao_dolar = 5.50;
     let preco_soja_dolar = 13.10;
     let preco_arroz_dolar = 15.43;
     let preco_milho_dolar = 5.12;
@@ -66,7 +64,7 @@
     let custo_armazenamento = 0;
     let base_prejuizo = 20.00
     let custo_prejuizo = 0;
-  
+
     formatador = new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL'
@@ -119,7 +117,7 @@
             } else if (prejuizo == custo_armazenamento) {
                 div_msg2.innerHTML = `O seu prejuízo foi de ${formatador.format(prejuizo)}. Armazenando o grão por ${meses} meses a margem será de ${formatador.format(margem)}`
             } else {
-                div_msg2.innerHTML = `O custo de armazenagem é maior que a desvalorização. Armazenar por ${meses} trará um custo extra de ${formatador.format(margem) * -1}`
+                div_msg2.innerHTML = `O custo de armazenagem é maior que a desvalorização. Armazenar por ${meses} trará um custo extra de ${formatador.format(margem * -1)}`
             }
         } else if (grao == 1) {
             let meses = Number(ipt_meses.value);
@@ -189,13 +187,13 @@
                 let imposto = faturamento_bruto * (icms / 100);
                 let imposto_funrural = faturamento_bruto * 0.0223;
                 faturamento_liquido = faturamento_bruto - (imposto + imposto_funrural)
-                div_msg3.innerHTML += `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
+                div_msg4.innerHTML = `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
                 ${formatador.format(faturamento_liquido)}, considerando o ICMS de ${formatador.format(imposto)} 
                 desconto do Funrural LC (224/2025) de ${formatador.format(imposto_funrural)} `
-            } else{
+            } else {
                 let imposto_funrural = faturamento_bruto * 0.0223;
-                faturamento_liquido = faturamento_bruto  - imposto_funrural;
-                div_msg3.innerHTML += `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
+                faturamento_liquido = faturamento_bruto - imposto_funrural;
+                div_msg4.innerHTML = `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
                 ${formatador.format(faturamento_liquido)}, considerando o desconto do Funrural 
                 LC (224/2025) de ${formatador.format(imposto_funrural)} `
             }
@@ -206,16 +204,16 @@
                 let imposto = faturamento_bruto * (icms / 100);
                 let imposto_funrural = faturamento_bruto * 0.0223;
                 faturamento_liquido = faturamento_bruto - (imposto + imposto_funrural)
-                div_msg3.innerHTML += `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
+                div_msg4.innerHTML = `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
                 ${formatador.format(faturamento_liquido)}, considerando o ICMS de ${formatador.format(imposto)} 
                 desconto do Funrural LC (224/2025) de ${formatador.format(imposto_funrural)} `
-            } else{
+            } else {
                 let imposto_funrural = faturamento_bruto * 0.0223;
-                faturamento_liquido = faturamento_bruto  - imposto_funrural;
-                div_msg3.innerHTML += `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
+                faturamento_liquido = faturamento_bruto - imposto_funrural;
+                div_msg4.innerHTML = `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
                 ${formatador.format(faturamento_liquido)}, considerando o desconto do Funrural 
                 LC (224/2025) de ${formatador.format(imposto_funrural)} `
-                
+
             }
         } else if (grao == 2) {
             let saca = quilos / 60
@@ -224,13 +222,13 @@
                 let imposto = faturamento_bruto * (icms / 100);
                 let imposto_funrural = faturamento_bruto * 0.0223;
                 faturamento_liquido = faturamento_bruto - (imposto + imposto_funrural)
-                div_msg3.innerHTML += `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
+                div_msg4.innerHTML = `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
                 ${formatador.format(faturamento_liquido)}, considerando o ICMS de ${formatador.format(imposto)} 
                 desconto do Funrural LC (224/2025) de ${formatador.format(imposto_funrural)} `
-            } else{
+            } else {
                 let imposto_funrural = faturamento_bruto * 0.0223;
-                faturamento_liquido = faturamento_bruto  - imposto_funrural;
-                div_msg3.innerHTML += `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
+                faturamento_liquido = faturamento_bruto - imposto_funrural;
+                div_msg4.innerHTML = `O valor bruto do seu ativo é em Real para venda no mercado nacional é de
                 ${formatador.format(faturamento_liquido)}, considerando o desconto do Funrural 
                 LC (224/2025) de ${formatador.format(imposto_funrural)} `
             }
