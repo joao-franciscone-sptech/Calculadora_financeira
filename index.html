@@ -11,11 +11,12 @@
 <body class="page-color">
     <h1>Maximize a Rentabilidade da sua Safra com a Grain Tech</h1>
     <h2>Não seja refém do mercado na hora da colheita.</h2>
-    <p class="text"> Vender grãos por falta de espaço no silo no momento de alta oferta reduz o seu poder de negociação e derruba a
+    <p class="text"> Vender grãos por falta de espaço no silo no momento de alta oferta reduz o seu poder de negociação
+        e derruba a
         sua rentabilidade. Enquanto uma venda forçada pode te dar um prejuízo de até R$ 25,00 por saca, o armazenamento
         estratégico custa, no máximo, R$ 4,50. Retome o controle da sua safra e venda quando o lucro for maior.</p>
     <div class="card-pai">
-        <div class="card-color card-filho">
+        <div class="card-color card-filho card-1">
             <h2>Selecione o ativo:</h2>
             <select name="" id="sel_ativo">
                 <option value="3">Tipo de grão</option>
@@ -31,15 +32,19 @@
             <span class="text">Tempo de armazenamento (meses): </span><input type="text" id="ipt_meses">
             <button onclick="calculo1()">Simular Custo</button>
             <br>
-            <div id="div_msg" class="text"></div>
+            <div id="div_msg" class="text card-msg">Preencha os dados acima e clique em Simular Custo para ver a
+                projeção.</div>
         </div>
-        <div class="card-color card-filho">
-            <h2>Análise de Perdas por Venda Forçada</h2>
+        <div class="card-color card-filho card-2">
+            <h2>Simulador de Perdas por Venda Forçada</h2>
+            <span class="text">Avalie o impacto financeiro de uma venda não planejada (Perda base: R$ 20,00 por
+                saca).</span>
+            <br><br>
             <button onclick="calculo2()">Analisar Margem</button>
             <br>
-            <div id="div_msg2" class="text"></div>
+            <div id="div_msg2" class="text card-msg">Clique em Analisar Margem para analisar a diferença de Armazenamento x Venda.</div>
         </div>
-        <div class="card-color card-filho">
+        <!-- <div class="card-color card-filho">
             <h2>Projeção de Faturamento – Mercado Internacional</h2>
            <span class="text">Prêmio Basis no Porto (US$): </span><input type="text" id="ipt_basis">
             <button onclick="calculodolar()">Simular Exportação</button>
@@ -50,7 +55,7 @@
             <button onclick="calculoreal()">Simular Mercado Interno</button>
             <br>
             <div id="div_msg4" class="text"></div>
-        </div>
+        </div> -->
     </div>
 </body>
 <script>
@@ -62,16 +67,15 @@
         style: 'currency',
         currency: 'USD'
     });
-    let padrao_cwt_arroz = 45.359237;
-    let padrao_bushel_soja = 27.2155;
-    let padrao_bushel_milho = 25.4012;
-    let preco_soja_dolar = 13.10;
-    let preco_arroz_dolar = 15.43;
-    let preco_milho_dolar = 5.12;
+    // let padrao_cwt_arroz = 45.359237;
+    // let padrao_bushel_soja = 27.2155;
+    // let padrao_bushel_milho = 25.4012;
+    // let preco_soja_dolar = 13.10;
+    // let preco_arroz_dolar = 15.43;
+    // let preco_milho_dolar = 5.12;
     let base_armazenamento = 4.50;
     let custo_armazenamento = 0;
     let base_prejuizo = 20.00
-    let custo_prejuizo = 0;    
     function calculo1() {
         let meses = Number(ipt_meses.value);
         let quilos = Number(ipt_quilos.value);
@@ -88,7 +92,7 @@
             let calculo_custo_final = calculo_armazenamento * meses;
             if (grao == 1) {
                 div_msg.innerHTML = `Considerando ${meses} meses, o seu custo de armazenamento será de ${formatador.format(calculo_custo_final)}`
-                custo_armazenamento += calculo_custo_final;
+                custo_armazenamento = calculo_custo_final;
             } else if (grao == 2) {
                 div_msg.innerHTML = `Considerando ${meses} meses, o seu custo de armazenamento será de ${formatador.format(calculo_custo_final)}`
                 custo_armazenamento = calculo_custo_final;
@@ -108,120 +112,119 @@
         } else if (grao == 0) {
             let sacas = Number(ipt_quilos.value) / 50;
             let prejuizo = sacas * base_prejuizo;
-            let margem = prejuizo - custo_armazenamento;
+            let margem = prejuizo - custo_armazenamento
             if (prejuizo > custo_armazenamento) {
-                div_msg2.innerHTML = `O seu prejuízo foi de ${formatador.format(prejuizo)}. Armazenando o grão por ${meses} meses a margem será de ${formatador.format(margem)}`
+                div_msg2.innerHTML = `O deságio por venda forçada seria de ${formatador.format(prejuizo)}. 
+                <br>O custo total para armazenar por ${meses} meses será de ${formatador.format(custo_armazenamento)}. 
+                <br>Estratégia Recomendada: Armazenar os grãos evitará a perda e garantirá uma retenção de ${formatador.format(margem)}.`;
             } else if (prejuizo == custo_armazenamento) {
-                div_msg2.innerHTML = `O seu prejuízo foi de ${formatador.format(prejuizo)}. Armazenando o grão por ${meses} meses a margem será de ${formatador.format(margem)}`
+                div_msg2.innerHTML = `O custo de armazenamento total de ${formatador.format(custo_armazenamento)} empatou com o prejuízo da venda forçada de ${formatador.format(prejuizo)}. 
+                <br>Ponto de Equilíbrio atingido. 
+                <br>A decisão deve considerar outras variáveis de mercado.`;
             } else {
-                div_msg2.innerHTML = `O custo de armazenagem é maior que a desvalorização. Armazenar por ${meses} trará um custo extra de ${formatador.format(margem * -1)}`
+                div_msg2.innerHTML = `O custo de armazenagem atual é maior que a perda na venda imediata. 
+                <br>Atenção: Armazenar por ${meses} meses trará uma despesa extra e injustificada de ${formatador.format(margem * -1)}.`;
             }
-        } else if (grao == 1) {
+        } else if (grao == 1 || grao == 2) {
             let sacas = Number(ipt_quilos.value) / 60;
             let prejuizo = sacas * base_prejuizo;
-            let margem = prejuizo - custo_armazenamento;
+            let margem = prejuizo - custo_armazenamento
             if (prejuizo > custo_armazenamento) {
-                div_msg2.innerHTML = `O seu prejuízo foi de ${formatador.format(prejuizo)}. Armazenando o grão por ${meses} meses a margem será de ${formatador.format(margem)}`
+                div_msg2.innerHTML = `O deságio por venda forçada seria de ${formatador.format(prejuizo)}. 
+                <br>O custo total para armazenar por ${meses} meses será de ${formatador.format(custo_armazenamento)}. 
+                <br>Estratégia Recomendada: Armazenar os grãos evitará a perda e garantirá uma retenção de ${formatador.format(margem)}.`;
             } else if (prejuizo == custo_armazenamento) {
-                div_msg2.innerHTML = `O seu prejuízo foi de ${formatador.format(prejuizo)}. Armazenando o grão por ${meses} meses a margem será de ${formatador.format(margem)}`
+                div_msg2.innerHTML = `O custo de armazenamento total de ${formatador.format(custo_armazenamento)} empatou com o prejuízo da venda forçada de ${formatador.format(prejuizo)}. 
+                <br>Ponto de Equilíbrio atingido. 
+                <br>A decisão deve considerar outras variáveis de mercado.`;
             } else {
-                div_msg2.innerHTML = `O custo de armazenagem é maior que a desvalorização. Armazenar por ${meses} trará um custo extra de ${formatador.format(margem)}`
-            }
-        } else if (grao == 2) {
-            let sacas = Number(ipt_quilos.value) / 60;
-            let prejuizo = sacas * base_prejuizo;
-            let margem = prejuizo - custo_armazenamento;
-            if (prejuizo > custo_armazenamento) {
-                div_msg2.innerHTML = `O seu prejuízo foi de ${formatador.format(prejuizo)}. Armazenando o grão por ${meses} meses a margem será de ${formatador.format(margem)}`
-            } else if (prejuizo == custo_armazenamento) {
-                div_msg2.innerHTML = `O seu prejuízo foi de ${formatador.format(prejuizo)}. Armazenando o grão por ${meses} meses a margem será de ${formatador.format(margem)}`
-            } else {
-                div_msg2.innerHTML = `O custo de armazenagem é maior que a desvalorização. Armazenar por ${meses} trará um custo extra de ${formatador.format(margem)}`
+                div_msg2.innerHTML = `O custo de armazenagem atual é maior que a perda na venda imediata. 
+                <br>Atenção: Armazenar por ${meses} meses trará uma despesa extra e injustificada de ${formatador.format(margem * -1)}.`;
             }
         }
     }
-    function calculodolar() {
-        let basis = Number(ipt_basis.value)
-        let grao = Number(sel_ativo.value);
-        let quilos = Number(ipt_quilos.value);
-        if (grao == 0) {
-            let fator = quilos / padrao_cwt_arroz;
-            let preco_ajustado = preco_arroz_dolar + basis;
-            let faturamento_bruto = fator * preco_ajustado;
-            let desconto_funrural = faturamento_bruto * 0.0223;
-            let faturamento_liquido = faturamento_bruto - desconto_funrural;
+    //    function calculodolar() {
+    //         let basis = Number(ipt_basis.value)
+    //         let grao = Number(sel_ativo.value);
+    //         let quilos = Number(ipt_quilos.value);
+    //         if (grao == 0) {
+    //             let fator = quilos / padrao_cwt_arroz;
+    //             let preco_ajustado = preco_arroz_dolar + basis;
+    //             let faturamento_bruto = fator * preco_ajustado;
+    //             let desconto_funrural = faturamento_bruto * 0.0223;
+    //             let faturamento_liquido = faturamento_bruto - desconto_funrural;
 
-            div_msg3.innerHTML = `A projeção de faturamento líquido em dólares é de ${formatadordolar.format(faturamento_liquido)}, já contabilizando o prêmio Basis de ${formatadordolar.format(basis)} e a dedução do Funrural (LC 224/2025) de ${formatadordolar.format(desconto_funrural)}.`;
-        } else if (grao == 1) {
-            let fator = quilos / padrao_bushel_milho;
-            let preco_ajustado = preco_milho_dolar + basis;
-            let faturamento_bruto = fator * preco_ajustado;
-            let desconto_funrural = faturamento_bruto * 0.0223;
-            let faturamento_liquido = faturamento_bruto - desconto_funrural;
+    //             div_msg3.innerHTML = `A projeção de faturamento líquido em dólares é de ${formatadordolar.format(faturamento_liquido)}, já contabilizando o prêmio Basis de ${formatadordolar.format(basis)} e a dedução do Funrural (LC 224/2025) de ${formatadordolar.format(desconto_funrural)}.`;
+    //         } else if (grao == 1) {
+    //             let fator = quilos / padrao_bushel_milho;
+    //             let preco_ajustado = preco_milho_dolar + basis;
+    //             let faturamento_bruto = fator * preco_ajustado;
+    //             let desconto_funrural = faturamento_bruto * 0.0223;
+    //             let faturamento_liquido = faturamento_bruto - desconto_funrural;
 
-            div_msg3.innerHTML = `A projeção de faturamento líquido em dólares é de ${formatadordolar.format(faturamento_liquido)}, já contabilizando o prêmio Basis de ${formatadordolar.format(basis)} e a dedução do Funrural (LC 224/2025) de ${formatadordolar.format(desconto_funrural)}.`;
-        } else {
-            let fator = quilos / padrao_bushel_soja;
-            let preco_ajustado = preco_soja_dolar + basis;
-            let faturamento_bruto = fator * preco_ajustado;
-            let desconto_funrural = faturamento_bruto * 0.0223;
-            let faturamento_liquido = faturamento_bruto - desconto_funrural;
+    //             div_msg3.innerHTML = `A projeção de faturamento líquido em dólares é de ${formatadordolar.format(faturamento_liquido)}, já contabilizando o prêmio Basis de ${formatadordolar.format(basis)} e a dedução do Funrural (LC 224/2025) de ${formatadordolar.format(desconto_funrural)}.`;
+    //         } else {
+    //             let fator = quilos / padrao_bushel_soja;
+    //             let preco_ajustado = preco_soja_dolar + basis;
+    //             let faturamento_bruto = fator * preco_ajustado;
+    //             let desconto_funrural = faturamento_bruto * 0.0223;
+    //             let faturamento_liquido = faturamento_bruto - desconto_funrural;
 
-            div_msg3.innerHTML = `A projeção de faturamento líquido em dólares é de ${formatadordolar.format(faturamento_liquido)}, já contabilizando o prêmio Basis de ${formatadordolar.format(basis)} e a dedução do Funrural (LC 224/2025) de ${formatadordolar.format(desconto_funrural)}.`;
-        }
-    }
-    function calculoreal() {
-        let grao = Number(sel_ativo.value);
-        let quilos = Number(ipt_quilos.value);
-        let icms = Number(ipt_icms.value);
-        let faturamento_liquido = 0;
-        if (grao == 0) {
-            let saca = quilos / 50;
-            let faturamento_bruto = saca * 79.07;
-            if (icms > 0) {
-                let imposto = faturamento_bruto * (icms / 100);
-                let imposto_funrural = faturamento_bruto * 0.0223;
-                let imposto_csll = faturamento_bruto * 0.08;
-                faturamento_liquido = faturamento_bruto - (imposto + imposto_funrural + imposto_csll)
-                div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos o ICMS de ${formatador.format(imposto)}, a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
-            } else {
-                let imposto_funrural = faturamento_bruto * 0.0223;
-                let imposto_csll = faturamento_bruto * 0.08;
-                faturamento_liquido = faturamento_bruto - (imposto_funrural + imposto_csll);
-                div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
-            }
-        } else if (grao == 1) {
-            let saca = quilos / 60;
-            let faturamento_bruto = saca * 70.93;
-            if (icms > 0) {
-                let imposto = faturamento_bruto * (icms / 100);
-                let imposto_csll = faturamento_bruto * 0.08;
-                let imposto_funrural = faturamento_bruto * 0.0223;
-                faturamento_liquido = faturamento_bruto - (imposto + imposto_funrural + imposto_csll)
-                div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos o ICMS de ${formatador.format(imposto)}, a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
-            } else {
-                let imposto_funrural = faturamento_bruto * 0.0223;
-                let imposto_csll = faturamento_bruto * 0.08;
-                faturamento_liquido = faturamento_bruto - (imposto_funrural + imposto_csll);
-                div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
-            }
-        } else if (grao == 2) {
-            let saca = quilos / 60;
-            let faturamento_bruto = saca * 160.14;
-            if (icms > 0) {
-                let imposto = faturamento_bruto * (icms / 100);
-                let imposto_csll = faturamento_bruto * 0.08;
-                let imposto_funrural = faturamento_bruto * 0.0223;
-                faturamento_liquido = faturamento_bruto - (imposto + imposto_funrural + imposto_csll)
-                div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos o ICMS de ${formatador.format(imposto)}, a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
-            } else {
-                let imposto_funrural = faturamento_bruto * 0.0223;
-                let imposto_csll = faturamento_bruto * 0.08;
-                faturamento_liquido = faturamento_bruto - (imposto_funrural + imposto_csll);
-                div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
-            }
-        }
-    }
+    //             div_msg3.innerHTML = `A projeção de faturamento líquido em dólares é de ${formatadordolar.format(faturamento_liquido)}, já contabilizando o prêmio Basis de ${formatadordolar.format(basis)} e a dedução do Funrural (LC 224/2025) de ${formatadordolar.format(desconto_funrural)}.`;
+    //         }
+    //     }
+    //     function calculoreal() {
+    //         let grao = Number(sel_ativo.value);
+    //         let quilos = Number(ipt_quilos.value);
+    //         let icms = Number(ipt_icms.value);
+    //         let faturamento_liquido = 0;
+    //         if (grao == 0) {
+    //             let saca = quilos / 50;
+    //             let faturamento_bruto = saca * 79.07;
+    //             if (icms > 0) {
+    //                 let imposto = faturamento_bruto * (icms / 100);
+    //                 let imposto_funrural = faturamento_bruto * 0.0223;
+    //                 let imposto_csll = faturamento_bruto * 0.08;
+    //                 faturamento_liquido = faturamento_bruto - (imposto + imposto_funrural + imposto_csll)
+    //                 div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos o ICMS de ${formatador.format(imposto)}, a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
+    //             } else {
+    //                 let imposto_funrural = faturamento_bruto * 0.0223;
+    //                 let imposto_csll = faturamento_bruto * 0.08;
+    //                 faturamento_liquido = faturamento_bruto - (imposto_funrural + imposto_csll);
+    //                 div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
+    //             }
+    //         } else if (grao == 1) {
+    //             let saca = quilos / 60;
+    //             let faturamento_bruto = saca * 70.93;
+    //             if (icms > 0) {
+    //                 let imposto = faturamento_bruto * (icms / 100);
+    //                 let imposto_csll = faturamento_bruto * 0.08;
+    //                 let imposto_funrural = faturamento_bruto * 0.0223;
+    //                 faturamento_liquido = faturamento_bruto - (imposto + imposto_funrural + imposto_csll)
+    //                 div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos o ICMS de ${formatador.format(imposto)}, a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
+    //             } else {
+    //                 let imposto_funrural = faturamento_bruto * 0.0223;
+    //                 let imposto_csll = faturamento_bruto * 0.08;
+    //                 faturamento_liquido = faturamento_bruto - (imposto_funrural + imposto_csll);
+    //                 div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
+    //             }
+    //         } else if (grao == 2) {
+    //             let saca = quilos / 60;
+    //             let faturamento_bruto = saca * 160.14;
+    //             if (icms > 0) {
+    //                 let imposto = faturamento_bruto * (icms / 100);
+    //                 let imposto_csll = faturamento_bruto * 0.08;
+    //                 let imposto_funrural = faturamento_bruto * 0.0223;
+    //                 faturamento_liquido = faturamento_bruto - (imposto + imposto_funrural + imposto_csll)
+    //                 div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos o ICMS de ${formatador.format(imposto)}, a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
+    //             } else {
+    //                 let imposto_funrural = faturamento_bruto * 0.0223;
+    //                 let imposto_csll = faturamento_bruto * 0.08;
+    //                 faturamento_liquido = faturamento_bruto - (imposto_funrural + imposto_csll);
+    //                 div_msg4.innerHTML = `A projeção de faturamento líquido no mercado nacional é de ${formatador.format(faturamento_liquido)}, já deduzidos a retenção do Funrural (LC 224/2025) de ${formatador.format(imposto_funrural)} e a CSLL de ${formatador.format(imposto_csll)}.`;
+    //             }
+    //         }
+    //     }
 
 </script>
 
